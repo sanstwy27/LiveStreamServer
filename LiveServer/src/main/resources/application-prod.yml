@@ -1,0 +1,12 @@
+spring:
+  profiles: prod
+
+twitch:
+  client_id: ""
+  client_secret: ""
+  grant_type: ""
+
+strings:
+  prefix:
+    controller:
+      api: "/api"
