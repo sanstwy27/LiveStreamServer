@@ -17,6 +17,7 @@ public class YmlPropertiesTwitchConfig {
     private String clientId;
     private String clientSecret;
     private String grantType;
+    private YmlTwitchUrl apiUrl;
 
     public String getClientId() {
         return clientId;
@@ -42,12 +43,21 @@ public class YmlPropertiesTwitchConfig {
         this.grantType = grantType;
     }
 
+    public YmlTwitchUrl getApiUrl() {
+        return apiUrl;
+    }
+
+    public void setApiUrl(YmlTwitchUrl apiUrl) {
+        this.apiUrl = apiUrl;
+    }
+
     @Override
     public String toString() {
         return "YmlPropertiesTwitchConfig{" +
                 "clientId='" + clientId + '\'' +
                 ", clientSecret='" + clientSecret + '\'' +
                 ", grantType='" + grantType + '\'' +
+                ", apiUrl=" + apiUrl +
                 '}';
     }
 }

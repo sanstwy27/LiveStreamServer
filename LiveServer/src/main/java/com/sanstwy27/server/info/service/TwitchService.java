@@ -76,7 +76,7 @@ public class TwitchService {
             }
         }
 
-        String apiUrl = "https://api.twitch.tv/helix/streams";
+        String apiUrl = ymlPropertiesTwitchConfig.getApiUrl().getGetstreams();
         String language = "zh";
         String after = null; // cursor
         System.out.println(apiUrl);
@@ -122,7 +122,8 @@ public class TwitchService {
 
     @Test
     private void updateToken() {
-        String apiUrl = "https://id.twitch.tv/oauth2/token";
+        System.out.println(ymlPropertiesTwitchConfig.getClientId());
+        String apiUrl = ymlPropertiesTwitchConfig.getApiUrl().getToken();
         System.out.println(apiUrl);
 
         RestTemplate restTemplate = new RestTemplate();

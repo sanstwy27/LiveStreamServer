@@ -1,12 +1,16 @@
 spring:
   profiles: prod
 
-twitch:
-  client_id: ""
-  client_secret: ""
-  grant_type: ""
-
 strings:
   prefix:
     controller:
       api: "/api"
+
+twitch:
+  client_id: ""
+  client_secret: ""
+  grant_type: ""
+  api-url:
+    getstreams: ""
+    token: ""
+
