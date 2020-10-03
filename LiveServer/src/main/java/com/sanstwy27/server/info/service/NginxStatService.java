@@ -15,6 +15,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Sanstwy27
@@ -29,12 +30,12 @@ public class NginxStatService {
 
     private List<StreamInfo> streamInfoList;
 
-    public List<StreamInfo> getStreamInfos(int page, int offset) {
-        return (List<StreamInfo>) MyUtil.getSubList(streamInfoList, page, offset);
+    public Map<String, Object> getStreamInfos(int page, int offset) {
+        return MyUtil.packInfo((List<StreamInfo>) MyUtil.getSubList(streamInfoList, page, offset), streamInfoList.size());
     }
 
-    public List<StreamInfo> getStreamInfos() {
-        return streamInfoList;
+    public Map<String, Object> getStreamInfos() {
+        return MyUtil.packInfo(streamInfoList, streamInfoList.size());
     }
 
     @Scheduled(initialDelay = 5000, fixedDelay = 90 * 1000)

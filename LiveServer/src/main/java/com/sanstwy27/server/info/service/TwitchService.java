@@ -45,12 +45,12 @@ public class TwitchService {
 
     }
 
-    public List<StreamInfo> getStreamInfos(int page, int offset) {
-        return (List<StreamInfo>) MyUtil.getSubList(streamInfoList, page, offset);
+    public Map<String, Object> getStreamInfos(int page, int offset) {
+        return MyUtil.packInfo((List<StreamInfo>) MyUtil.getSubList(streamInfoList, page, offset), streamInfoList.size());
     }
 
-    public List<StreamInfo> getStreamInfos() {
-        return streamInfoList;
+    public Map<String, Object> getStreamInfos() {
+        return MyUtil.packInfo(streamInfoList, streamInfoList.size());
     }
 
     public List<TwitchChannel> getTwitchStreams(int page, int offset) {
