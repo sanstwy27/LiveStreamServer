@@ -11,14 +11,24 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
+    // Channel Info
+    "user_id",
     "user_name",
     "title",
     "viewer_count",
     "language",
-    "thumbnail_url"
+    "thumbnail_url",
+    // Streamer Info
+    "login",
+    "display_name",
+    "description",
+    "profile_image_url",
+    "offline_image_url"
 })
 public class TwitchChannel {
 
+    @JsonProperty("user_id")
+    String userId;
     @JsonProperty("user_name")
     String userName;
     @JsonProperty("title")
@@ -29,6 +39,30 @@ public class TwitchChannel {
     String language;
     @JsonProperty("thumbnail_url")
     String thumbnailUrl;
+    @JsonProperty("login")
+    String login;
+    @JsonProperty("display_name")
+    String displayName;
+    @JsonProperty("description")
+    String description;
+    @JsonProperty("profile_image_url")
+    String profileImageUrl;
+    @JsonProperty("offline_image_url")
+    String offlineImageUrl;
+
+    /**
+     * Channel Info
+     * @return
+     */
+    @JsonProperty("user_id")
+    public String getUserId() {
+        return userId;
+    }
+
+    @JsonProperty("user_id")
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     @JsonProperty("user_name")
     public String getUserName() {
@@ -80,14 +114,74 @@ public class TwitchChannel {
         this.thumbnailUrl = thumbnailUrl;
     }
 
+    /**
+     * Streamer Info
+     * @return
+     */
+    @JsonProperty("login")
+    public String getLogin() {
+        return login;
+    }
+
+    @JsonProperty("login")
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    @JsonProperty("display_name")
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    @JsonProperty("display_name")
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
+    }
+
+    @JsonProperty("description")
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @JsonProperty("profile_image_url")
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    @JsonProperty("profile_image_url")
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    @JsonProperty("offline_image_url")
+    public String getOfflineImageUrl() {
+        return offlineImageUrl;
+    }
+
+    @JsonProperty("offline_image_url")
+    public void setOfflineImageUrl(String offlineImageUrl) {
+        this.offlineImageUrl = offlineImageUrl;
+    }
+
     @Override
     public String toString() {
         return "TwitchChannel{" +
-                "userName='" + userName + '\'' +
+                "userId='" + userId + '\'' +
+                ", userName='" + userName + '\'' +
                 ", title='" + title + '\'' +
                 ", viewerCount='" + viewerCount + '\'' +
                 ", language='" + language + '\'' +
                 ", thumbnailUrl='" + thumbnailUrl + '\'' +
+                ", login='" + login + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", profileImageUrl='" + profileImageUrl + '\'' +
+                ", offlineImageUrl='" + offlineImageUrl + '\'' +
                 '}';
     }
 }

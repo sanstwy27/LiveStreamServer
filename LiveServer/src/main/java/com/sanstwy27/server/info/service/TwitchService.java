@@ -33,6 +33,8 @@ import java.util.Map;
 @Service
 public class TwitchService {
 
+    final int QUERY_LIMIT = 100;
+
     @Autowired
     private YmlPropertiesTwitchConfig ymlPropertiesTwitchConfig;
 
@@ -116,7 +118,9 @@ public class TwitchService {
                 after = "";
             }
         }
+        updateUsers(tmp);
         convertTwitchListToMyList(tmp);
+        System.out.println("[Twitch] total streams : " + tmp.size());
         twitchChannelList = tmp;
     }
 
@@ -142,16 +146,62 @@ public class TwitchService {
         accessToken = (String) exchange.getBody().get("access_token");
     }
 
+    private void updateUsers(List<TwitchChannel> list) {
+        if(list != null && !list.isEmpty()) {
+            String usersApi = ymlPropertiesTwitchConfig.getApiUrl().getUsers();
+            RestTemplate restTemplate = new RestTemplate();
+
+            for(int i = 0; i < list.size(); i += QUERY_LIMIT) {
+                UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(usersApi);
+                for(int j = i; j < Math.min(list.size(), i + QUERY_LIMIT); j++) {
+                    builder.queryParam("id", list.get(j).getUserId());
+                }
+                System.out.println(builder.toUriString());
+
+                MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+                headers.add("Authorization", String.format("%s %s", "Bearer", accessToken));
+                headers.add("Client-Id", ymlPropertiesTwitchConfig.getClientId());
+                HttpEntity he = new HttpEntity(null, headers);
+                ResponseEntity<String> exchange = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, he, String.class);
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+
+                TwitchPOJO readValue = null;
+                try {
+                    readValue = objectMapper.readValue(
+                            exchange.getBody(), new TypeReference<TwitchPOJO>() {
+                            }
+                    );
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+                if(readValue != null && !readValue.getData().isEmpty()) {
+                    for(int j = 0; j < readValue.getData().size(); j++) {
+                        list.get(i + j).setLogin(readValue.getData().get(j).getLogin());
+                        list.get(i + j).setDisplayName(readValue.getData().get(j).getDisplayName());
+                        list.get(i + j).setDescription(readValue.getData().get(j).getDescription());
+                        list.get(i + j).setProfileImageUrl(readValue.getData().get(j).getProfileImageUrl());
+                        list.get(i + j).setOfflineImageUrl(readValue.getData().get(j).getOfflineImageUrl());
+                    }
+                }
+            }
+        }
+    }
+
     private void convertTwitchListToMyList(List<TwitchChannel> src) {
         List<StreamInfo> tmp = new ArrayList<StreamInfo>();
         for(TwitchChannel tc : src) {
-            tmp.add(new StreamInfo(tc.getUserName(),
-                               tc.getTitle(),
-                               tc.getLanguage(),
-                               Integer.valueOf(tc.getViewerCount()),
-                       "avatarUrl",
-                      "streamUrl",
-                               tc.getThumbnailUrl()));
+            tmp.add(new StreamInfo(
+                        tc.getUserId(),
+                        tc.getUserName(),
+                        tc.getLogin(),
+                        tc.getTitle(),
+                        tc.getLanguage(),
+                        Integer.valueOf(tc.getViewerCount()),
+                        tc.getProfileImageUrl(),
+                        "https://www.twitch.tv/" + tc.getLogin(),
+                        tc.getThumbnailUrl().replace("{width}x{height}", "320x180")));
         };
         streamInfoList = tmp;
     }

@@ -65,7 +65,9 @@ public class NginxStatService {
                 if(node.getNodeType() == Node.ELEMENT_NODE) {
                     Element elem = (Element) node;
                     StreamInfo si = new StreamInfo(
+                            "id",
                             "name",
+                            "account",
                             "title",
                             "language",
                             Integer.parseInt(elem.getElementsByTagName("nclients").item(0).getTextContent()),

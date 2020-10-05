@@ -1,5 +1,6 @@
 package com.sanstwy27.server.info.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @create 9/30/2020
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
         "data",
         "pagination"

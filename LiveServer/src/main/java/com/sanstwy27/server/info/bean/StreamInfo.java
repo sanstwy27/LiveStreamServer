@@ -7,7 +7,9 @@ package com.sanstwy27.server.info.bean;
 
 public class StreamInfo {
 
-    String name;
+    String id;
+    String streamerName;
+    String streamerAcct;
     String title;
     String language;
     int viewerCount;
@@ -18,8 +20,10 @@ public class StreamInfo {
     public StreamInfo() {
     }
 
-    public StreamInfo(String name, String title, String language, int viewerCount, String avatarUrl, String streamUrl, String thumbnailUrl) {
-        this.name = name;
+    public StreamInfo(String id, String streamerName, String streamerAcct, String title, String language, int viewerCount, String avatarUrl, String streamUrl, String thumbnailUrl) {
+        this.id = id;
+        this.streamerName = streamerName;
+        this.streamerAcct = streamerAcct;
         this.title = title;
         this.language = language;
         this.viewerCount = viewerCount;
@@ -28,12 +32,28 @@ public class StreamInfo {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getStreamerName() {
+        return streamerName;
+    }
+
+    public void setStreamerName(String streamerName) {
+        this.streamerName = streamerName;
+    }
+
+    public String getStreamerAcct() {
+        return streamerAcct;
+    }
+
+    public void setStreamerAcct(String streamerAcct) {
+        this.streamerAcct = streamerAcct;
     }
 
     public String getTitle() {
@@ -87,7 +107,7 @@ public class StreamInfo {
     @Override
     public String toString() {
         return "StreamInfo{" +
-                "name='" + name + '\'' +
+                "name='" + streamerName + '\'' +
                 ", title='" + title + '\'' +
                 ", language='" + language + '\'' +
                 ", viewerCount=" + viewerCount +

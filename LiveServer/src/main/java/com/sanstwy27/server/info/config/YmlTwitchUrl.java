@@ -9,6 +9,7 @@ public class YmlTwitchUrl {
 
     private String getstreams;
     private String token;
+    private String users;
 
     public String getGetstreams() {
         return getstreams;
@@ -26,11 +27,20 @@ public class YmlTwitchUrl {
         this.token = token;
     }
 
+    public String getUsers() {
+        return users;
+    }
+
+    public void setUsers(String users) {
+        this.users = users;
+    }
+
     @Override
     public String toString() {
-        return "apiUrl{" +
+        return "YmlTwitchUrl{" +
                 "getstreams='" + getstreams + '\'' +
                 ", token='" + token + '\'' +
+                ", users='" + users + '\'' +
                 '}';
     }
 }
