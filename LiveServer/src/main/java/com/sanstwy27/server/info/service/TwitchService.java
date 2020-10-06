@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,33 +39,41 @@ public class TwitchService {
     @Autowired
     private YmlPropertiesTwitchConfig ymlPropertiesTwitchConfig;
 
-    static private List<StreamInfo> streamInfoList;
-    static private List<TwitchChannel> twitchChannelList;
+    static private Map<String, List<StreamInfo>> streamInfoMap = new HashMap<String, List<StreamInfo>>();
+    static private Map<String, List<TwitchChannel>> twitchChannelMap = new HashMap<String, List<TwitchChannel>>();
     private String accessToken;
 
     @Test
     public void test() {
-
     }
 
-    public Map<String, Object> getStreamInfos(int page, int offset) {
-        return MyUtil.packInfo((List<StreamInfo>) MyUtil.getSubList(streamInfoList, page, offset), streamInfoList.size());
+    public Map<String, Object> getStreamInfos(String lang, int page, int offset) {
+        return MyUtil.packInfo((List<StreamInfo>) MyUtil.getSubList(streamInfoMap.get(lang), page, offset), streamInfoMap.get(lang).size());
     }
 
-    public Map<String, Object> getStreamInfos() {
-        return MyUtil.packInfo(streamInfoList, streamInfoList.size());
+    public Map<String, Object> getStreamInfos(String lang) {
+        return MyUtil.packInfo(streamInfoMap.get(lang), streamInfoMap.get(lang).size());
     }
 
-    public List<TwitchChannel> getTwitchStreams(int page, int offset) {
-        return (List<TwitchChannel>) MyUtil.getSubList(twitchChannelList, page, offset);
+    public List<TwitchChannel> getTwitchStreams(String lang, int page, int offset) {
+        return (List<TwitchChannel>) MyUtil.getSubList(twitchChannelMap.get(lang), page, offset);
     }
 
-    public List<TwitchChannel> getTwitchStreams() {
-        return twitchChannelList;
+    public List<TwitchChannel> getTwitchStreams(String lang) {
+        return twitchChannelMap.get(lang);
     }
 
     @Scheduled(initialDelay = 5000, fixedDelay = 90 * 1000)
-    private void scheduleGetStreams() {
+    private void scheduleUpdateZhStreams() {
+        updateStreams("zh");
+    }
+
+    @Scheduled(initialDelay = 5000, fixedDelay = 180 * 1000)
+    private void scheduleUpdateEnStreams() {
+        updateStreams("en");
+    }
+
+    private void updateStreams(String lang) {
         if(ymlPropertiesTwitchConfig == null) {
             System.out.println("oops.. ymlPropertiesTwitchConfig == null");
             return;
@@ -79,16 +88,15 @@ public class TwitchService {
         }
 
         String apiUrl = ymlPropertiesTwitchConfig.getApiUrl().getGetstreams();
-        String language = "zh";
         String after = null; // cursor
         System.out.println(apiUrl);
 
         List<TwitchChannel> tmp = new ArrayList<TwitchChannel>();
         RestTemplate restTemplate = new RestTemplate();
 
-        while(after == null || !after.equals("")) {
+        while (after == null || !after.equals("")) {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl)
-                    .queryParam("language", language)
+                    .queryParam("language", lang.toString())
                     .queryParam("after", after);
 
             MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
@@ -108,7 +116,7 @@ public class TwitchService {
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            if(readValue != null && !readValue.getData().isEmpty()) {
+            if (readValue != null && !readValue.getData().isEmpty()) {
                 System.out.println(readValue);
                 System.out.println(readValue.getData().get(0));
                 System.out.println(readValue.getPagination().getCursor());
@@ -119,12 +127,11 @@ public class TwitchService {
             }
         }
         updateUsers(tmp);
-        convertTwitchListToMyList(tmp);
-        System.out.println("[Twitch] total streams : " + tmp.size());
-        twitchChannelList = tmp;
+        convertTwitchListToMyList(lang, tmp);
+        System.out.println("[Twitch] total streams : " + tmp.size() + ", lang: " + lang);
+        twitchChannelMap.put(lang, tmp);
     }
 
-    @Test
     private void updateToken() {
         System.out.println(ymlPropertiesTwitchConfig.getClientId());
         String apiUrl = ymlPropertiesTwitchConfig.getApiUrl().getToken();
@@ -189,7 +196,7 @@ public class TwitchService {
         }
     }
 
-    private void convertTwitchListToMyList(List<TwitchChannel> src) {
+    private void convertTwitchListToMyList(String lang, List<TwitchChannel> src) {
         List<StreamInfo> tmp = new ArrayList<StreamInfo>();
         for(TwitchChannel tc : src) {
             tmp.add(new StreamInfo(
@@ -203,6 +210,6 @@ public class TwitchService {
                         "https://www.twitch.tv/" + tc.getLogin(),
                         tc.getThumbnailUrl().replace("{width}x{height}", "320x180")));
         };
-        streamInfoList = tmp;
+        streamInfoMap.put(lang, tmp);
     }
 }

@@ -21,24 +21,24 @@ public class TwitchController {
     @Autowired
     private TwitchService twitchService;
 
-    @GetMapping("/slist")
-    public ResponseEntity<Object> myStreamInfoList() {
-        return new ResponseEntity<Object>(twitchService.getStreamInfos(), HttpStatus.OK);
+    @GetMapping("/slist/{lang}")
+    public ResponseEntity<Object> myStreamInfoList(@PathVariable String lang) {
+        return new ResponseEntity<Object>(twitchService.getStreamInfos(lang), HttpStatus.OK);
     }
 
-    @GetMapping("/slist/{page}/{offset}")
-    public ResponseEntity<?> myStreamInfoList(@PathVariable String page, @PathVariable String offset) {
-        return new ResponseEntity<Object>(twitchService.getStreamInfos(Integer.valueOf(page), Integer.valueOf(offset)), HttpStatus.OK);
+    @GetMapping("/slist/{lang}/{page}/{offset}")
+    public ResponseEntity<?> myStreamInfoList(@PathVariable String lang, @PathVariable String page, @PathVariable String offset) {
+        return new ResponseEntity<Object>(twitchService.getStreamInfos(lang, Integer.valueOf(page), Integer.valueOf(offset)), HttpStatus.OK);
     }
 
-    @GetMapping("/tlist")
-    public ResponseEntity<Object> list() {
-        return new ResponseEntity<Object>(twitchService.getTwitchStreams(), HttpStatus.OK);
+    @GetMapping("/tlist/{lang}")
+    public ResponseEntity<Object> list(@PathVariable String lang) {
+        return new ResponseEntity<Object>(twitchService.getTwitchStreams(lang), HttpStatus.OK);
     }
 
-    @GetMapping("/tlist/{page}/{offset}")
-    public ResponseEntity<?> list(@PathVariable String page, @PathVariable String offset) {
-        return new ResponseEntity<Object>(twitchService.getTwitchStreams(Integer.valueOf(page), Integer.valueOf(offset)), HttpStatus.OK);
+    @GetMapping("/tlist/{lang}/{page}/{offset}")
+    public ResponseEntity<?> list(@PathVariable String lang, @PathVariable String page, @PathVariable String offset) {
+        return new ResponseEntity<Object>(twitchService.getTwitchStreams(lang, Integer.valueOf(page), Integer.valueOf(offset)), HttpStatus.OK);
     }
 
     @GetMapping("/test")
