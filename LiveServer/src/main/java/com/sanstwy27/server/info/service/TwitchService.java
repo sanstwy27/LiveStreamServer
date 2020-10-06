@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Sanstwy27
@@ -39,8 +40,8 @@ public class TwitchService {
     @Autowired
     private YmlPropertiesTwitchConfig ymlPropertiesTwitchConfig;
 
-    static private Map<String, List<StreamInfo>> streamInfoMap = new HashMap<String, List<StreamInfo>>();
-    static private Map<String, List<TwitchChannel>> twitchChannelMap = new HashMap<String, List<TwitchChannel>>();
+    static private Map<String, List<StreamInfo>> streamInfoMap = new ConcurrentHashMap<String, List<StreamInfo>>();
+    static private Map<String, List<TwitchChannel>> twitchChannelMap = new ConcurrentHashMap<String, List<TwitchChannel>>();
     private String accessToken;
 
     @Test
