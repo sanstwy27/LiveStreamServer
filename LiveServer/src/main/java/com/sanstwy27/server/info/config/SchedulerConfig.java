@@ -24,6 +24,6 @@ public class SchedulerConfig implements SchedulingConfigurer {
 
     @Bean
     public Executor taskExecutor() {
-        return Executors.newScheduledThreadPool(3);
+        return Executors.newScheduledThreadPool(6);
     }
 }

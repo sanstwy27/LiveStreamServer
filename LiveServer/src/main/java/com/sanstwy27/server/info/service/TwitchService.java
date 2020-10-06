@@ -69,6 +69,16 @@ public class TwitchService {
         updateStreams("zh");
     }
 
+    @Scheduled(initialDelay = 5000, fixedDelay = 90 * 1000)
+    private void scheduleUpdateJaStreams() {
+        updateStreams("ja");
+    }
+
+    @Scheduled(initialDelay = 5000, fixedDelay = 120 * 1000)
+    private void scheduleUpdateKoStreams() {
+        updateStreams("ko");
+    }
+
     @Scheduled(initialDelay = 5000, fixedDelay = 180 * 1000)
     private void scheduleUpdateEnStreams() {
         updateStreams("en");
