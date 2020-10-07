@@ -9,7 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration(classes = YmlPropertiesTwitchConfig.class)
 @SpringBootTest(classes = TwitchService.class)
-class LiveStreamServerApplicationTests {
+class LiveListServerApplicationTests {
 
     @Autowired
     private TwitchService twitchService;

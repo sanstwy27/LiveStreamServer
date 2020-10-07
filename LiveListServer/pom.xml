@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.sanstwy27</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>livelistserver</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>LiveStreamServer</name>
+    <name>LiveListServer</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
