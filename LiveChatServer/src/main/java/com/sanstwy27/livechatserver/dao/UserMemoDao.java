@@ -20,6 +20,6 @@ public class UserMemoDao {
     }
 
     public void save(UserEntity userEntity) {
-        userEntityMap.put(userEntity.getIp(), userEntity);
+        userEntityMap.put(userEntity.getUuid(), userEntity);
     }
 }

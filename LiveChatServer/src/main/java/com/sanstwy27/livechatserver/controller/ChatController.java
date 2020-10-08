@@ -34,17 +34,18 @@ public class ChatController {
 
     @RequestMapping(value = "/live_room", method = RequestMethod.GET)
     public String auth(HttpServletRequest request, Model model) {
+        String uuid = request.getParameter("uuid");
         String ip = IpUtil.getIp(request);
-        Random random = new Random(20);
         HttpSession session = request.getSession();
         UserEntity user;
-        if (userDao.findOne(ip) != null) {
+        if (userDao.findOne(uuid) != null) {
             // visited
-            user = userDao.findOne(ip);
+            user = userDao.findOne(uuid);
         } else {
             // not visited
             user = new UserEntity();
             user.setIp(ip);
+            user.setUuid(uuid);
             Faker faker = new Faker();
             user.setName(faker.name().firstName() + " " + faker.name().lastName());
             userDao.save(user);

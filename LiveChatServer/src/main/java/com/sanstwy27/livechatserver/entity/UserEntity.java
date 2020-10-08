@@ -10,6 +10,7 @@ import java.util.Objects;
 public class UserEntity implements Serializable, Comparable<UserEntity> {
     private String ip;
     private String name;
+    private String uuid;
 
     public String getIp() {
         return ip;
@@ -25,6 +26,14 @@ public class UserEntity implements Serializable, Comparable<UserEntity> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     @Override
@@ -43,6 +52,7 @@ public class UserEntity implements Serializable, Comparable<UserEntity> {
 
         if (!Objects.equals(ip, that.ip)) return false;
         if (!Objects.equals(name, that.name)) return false;
+        if (!Objects.equals(uuid, that.uuid)) return false;
 
         return true;
     }
@@ -57,6 +67,7 @@ public class UserEntity implements Serializable, Comparable<UserEntity> {
         return "UserEntity{" +
                 "ip='" + ip + '\'' +
                 ", name='" + name + '\'' +
+                ", uuid='" + uuid + '\'' +
                 '}';
     }
 }
